@@ -29,11 +29,17 @@ namespace DataAccessLayer
 
         public async Task Delete(int key)
         {
-            if (_appContext.CommentDbModels is null) return;
+            if (_appContext.CommentDbModels is null)
+            {
+                throw new NullReferenceException("Comment data doesn't exist");
+            }
 
             CommentDbModel comment = _appContext.CommentDbModels.Find(key);
 
-            if (comment is null) return;
+            if (comment is null)
+            {
+                throw new NullReferenceException("Object doesn't exists");
+            }
 
             _appContext.CommentDbModels.Remove(comment);
             await _appContext.SaveChangesAsync();
@@ -82,6 +88,11 @@ namespace DataAccessLayer
         {
             CommentDbModel comment = await Read(entity.Id);
 
+            if (comment is null)
+            {
+                throw new NullReferenceException("Object doesn't exists");
+            }
+
             _appContext.CommentDbModels.Entry(comment).CurrentValues.SetValues(entity);
 
             if (useNavigationalProperties)
@@ -97,6 +108,7 @@ namespace DataAccessLayer
                 }
                 comment.User = entity.User;
             }
+            await _appContext.SaveChangesAsync();
         }
     }
 }
