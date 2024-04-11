@@ -86,14 +86,17 @@ namespace DataAccessLayer
 
         public async Task Update(CommentDbModel entity, bool useNavigationalProperties)
         {
-            CommentDbModel comment = await Read(entity.Id);
+            CommentDbModel comment = await Read(entity.Id, true, false);
 
             if (comment is null)
             {
                 throw new NullReferenceException("Object doesn't exists");
             }
 
-            _appContext.CommentDbModels.Entry(comment).CurrentValues.SetValues(entity);
+            comment.ReportId = entity.ReportId;
+            comment.UserId = entity.UserId;
+            comment.CommentContent = entity.CommentContent;
+            comment.PostedOn = entity.PostedOn;
 
             if (useNavigationalProperties)
             {
@@ -102,9 +105,7 @@ namespace DataAccessLayer
                 if (user is null)
                 {
                     UserContext context = new UserContext(_appContext);
-                    context.Create(user);
-
-                    comment.User = user; 
+                    await context.Create(entity.User);
                 }
                 comment.User = entity.User;
             }

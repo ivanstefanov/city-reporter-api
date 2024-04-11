@@ -29,5 +29,6 @@ namespace city_reporter_api.Controllers
             })
             .ToArray();
         }
+
     }
 }

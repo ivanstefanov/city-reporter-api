@@ -10,6 +10,10 @@ namespace DataBase.DbModels
 {
     public class CommentDbModel
     {
+        private CommentDbModel()
+        {
+            
+        }
         public CommentDbModel(int userId, int reportId, DateTime postedOn, string commentContent, UserDbModel user)
         {
             UserId = userId;
