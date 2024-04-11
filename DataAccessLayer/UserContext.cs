@@ -7,9 +7,9 @@ namespace DataAccessLayer
     {
         private readonly AppDbContext _appDbContext;
 
-        public UserContext()
+        public UserContext(AppDbContext context)
         {
-            _appDbContext = new AppDbContext();
+            _appDbContext = context;
         }
         
         public async Task Create(UserDbModel entity)
