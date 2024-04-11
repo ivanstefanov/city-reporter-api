@@ -11,8 +11,7 @@ namespace DataBase.DbModels
     public class ReportDbModel
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string IdReport { get; set; }
+        public int IdReport { get; set; }
 
         [Required]
         public string Title { get; set; }
