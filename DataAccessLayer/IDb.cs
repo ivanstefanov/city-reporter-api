@@ -10,7 +10,7 @@ namespace DataAccessLayer
     {
         Task Create(T entity);
 
-        Task<T> Read(K entity, bool useNavigationalProperties = false, bool isReadOnlyTrue = true);
+        Task<T> Read(K key, bool useNavigationalProperties = false, bool isReadOnlyTrue = true);
 
         Task<List<T>> ReadAll(bool useNavigationalProperties = false, bool isReadOnlyTrue = true);
 
