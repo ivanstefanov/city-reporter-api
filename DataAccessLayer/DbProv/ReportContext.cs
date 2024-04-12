@@ -22,7 +22,7 @@ namespace DataAccessLayer.DbProv
         {
             if(entity == null)
             {
-                throw new Exception("Entity was null");
+                throw new Exception("Entity is null");
             }
             await _appDbContext.ReportDbModels.AddAsync(entity);
             await _appDbContext.SaveChangesAsync();
@@ -30,7 +30,20 @@ namespace DataAccessLayer.DbProv
 
         public async Task<ReportDbModel> Read(int key, bool useNavigationalProperties = false, bool isReadOnlyTrue = true)
         {
-            ReportDbModel reportFromDb = await _appDbContext.ReportDbModels.FirstOrDefaultAsync(x => x.IdReport == key);
+            IQueryable<ReportDbModel> reports = _appDbContext.ReportDbModels;
+
+            if (useNavigationalProperties)
+            {
+                reports = reports.Include(c => c.User);
+            }
+            if(isReadOnlyTrue)
+            {
+                reports.AsNoTrackingWithIdentityResolution();
+            }
+
+            ReportDbModel report = await reports.FirstOrDefaultAsync(c => c.IdReport == key);
+
+            return report;
         }
 
         public Task<List<ReportDbModel>> ReadAll(bool useNavigationalProperties = false, bool isReadOnlyTrue = true)

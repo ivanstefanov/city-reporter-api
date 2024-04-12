@@ -13,6 +13,8 @@ namespace DataBase.DbModels
         [Key]
         public int IdReport { get; set; }
 
+        public UserDbModel User { get; set; }
+
         [Required]
         public string Title { get; set; }
 
@@ -24,21 +26,28 @@ namespace DataBase.DbModels
         [Required]
         public string Location { get; set; }
 
+        [ForeignKey (nameof(UserDbModel))]
+        [Required]
+        public int UserId { get; set; }
+
         private ReportDbModel() { }
 
-        public ReportDbModel(string title, byte [] image, string description, string location)
+        public ReportDbModel(string title, byte [] image, string description, string location, int userId, UserDbModel user)
         {
             this.Title = title;
             this.Image = image;
             this.Description = description;
             this.Location = location;
+            this.UserId = userId;
+            this.User = user;
         }
-        public ReportDbModel(string title, string description, string location)
+        public ReportDbModel(string title, string description, string location, int userId, UserDbModel user)
         {
             this.Title = title;
             this.Description = description;
             this.Location = location;
+            this.UserId = userId;
+            this.User = user;
         }
-
     }
 }
