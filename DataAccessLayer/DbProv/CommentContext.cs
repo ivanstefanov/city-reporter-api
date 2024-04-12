@@ -8,9 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using DataBase;
 
-namespace DataAccessLayer
+namespace DataAccessLayer.DbProv
 {
-    public class CommentContext:IDb<CommentDbModel,int>
+    public class CommentContext : IDb<CommentDbModel, int>
     {
         private readonly AppDbContext _appContext;
         public CommentContext(AppDbContext context)
@@ -61,7 +61,7 @@ namespace DataAccessLayer
             }
 
             CommentDbModel comment = await comments.
-                FirstOrDefaultAsync(c => c.Id==entity);
+                FirstOrDefaultAsync(c => c.Id == entity);
 
             return comment;
 
