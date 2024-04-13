@@ -5,6 +5,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataBase.DbModels
 {
@@ -23,13 +25,28 @@ namespace DataBase.DbModels
             User = user;           
 
         }
+
+        public CommentDbModel(UserDbModel user, int userId, ReportDbModel report, int reportId, DateTime postedOn, string commentContent)
+        {
+            User = user;
+            UserId = userId;
+            Report = report;
+            ReportId = reportId;
+            PostedOn = postedOn;
+            CommentContent = commentContent;
+        }
+
         [Key]
         public int Id { get; set; }
+
         public UserDbModel User { get; set; }
 
         [ForeignKey(nameof(User))]
         public int UserId { get; set; }
         [Required]
+        public ReportDbModel Report { get; set; }
+        [ForeignKey(nameof(Report))]
+
 
         public int ReportId { get; set; }
         [Required]
