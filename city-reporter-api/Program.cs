@@ -1,4 +1,7 @@
 
+using DataAccessLayer.DbProv;
+using DataBase.DbModels;
+
 namespace city_reporter_api
 {
     public class Program

@@ -1,3 +1,4 @@
+using DataAccessLayer;
 using Microsoft.AspNetCore.Mvc;
 
 namespace city_reporter_api.Controllers

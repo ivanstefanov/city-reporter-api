@@ -27,6 +27,11 @@ namespace DataAccessLayer.DbProv
             await _appDbContext.SaveChangesAsync();
         }
 
+        public Task Delete(int key)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<ReportDbModel> Read(int key, bool useNavigationalProperties = false, bool isReadOnlyTrue = true)
         {
             IQueryable<ReportDbModel> reports = _appDbContext.ReportDbModels;
@@ -78,9 +83,6 @@ namespace DataAccessLayer.DbProv
             }
         }
 
-        public Task Delete(int key)
-        {
-
-        }
+        
     }
 }
