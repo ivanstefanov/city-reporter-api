@@ -32,7 +32,5 @@ namespace DataBase
         }
             
         public DbSet<UserDbModel> UserDbModels { get; set; }
-
-        public DbSet<ReportDbModel> ReportDbModels { get; set; }
     }
 }

@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccessLayer.DbProv
@@ -41,19 +40,42 @@ namespace DataAccessLayer.DbProv
                 reports.AsNoTrackingWithIdentityResolution();
             }
 
-            ReportDbModel report = await reports.FirstOrDefaultAsync(c => c.IdReport == key);
-
-            return report;
+            return await reports.SingleOrDefaultAsync(u => u.IdReport == key);
         }
 
-        public Task<List<ReportDbModel>> ReadAll(bool useNavigationalProperties = false, bool isReadOnlyTrue = true)
+        public async Task<List<ReportDbModel>> ReadAll(bool useNavigationalProperties = false, bool isReadOnlyTrue = true)
         {
+            IQueryable<ReportDbModel> reports = _appDbContext.ReportDbModels;
 
+            if (useNavigationalProperties)
+            {
+                reports = reports.Include(c => c.User);
+            }
+            if (isReadOnlyTrue)
+            {
+                reports.AsNoTrackingWithIdentityResolution();
+            }
+
+            return await reports.ToListAsync();
         }
 
-        public Task Update(ReportDbModel entity, bool useNavigationalProperties)
+        public async Task Update(ReportDbModel entity, bool useNavigationalProperties)
         {
+            ReportDbModel reportFromDb = await Read(entity.IdReport, useNavigationalProperties, false);
 
+            if (reportFromDb == null) throw new ArgumentException("This report is null.");
+
+            _appDbContext.ReportDbModels.Entry(reportFromDb).CurrentValues.SetValues(entity);
+
+            if (useNavigationalProperties)
+            {
+                UserDbModel userToReport = _appDbContext.UserDbModels.Find(entity.UserId);
+
+                if(userToReport == null)
+                {
+                    
+                }
+            }
         }
 
         public Task Delete(int key)
