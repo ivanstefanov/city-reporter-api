@@ -17,6 +17,10 @@ namespace DataAccessLayer.DbProv
         {
             _appDbContext = appDbContext;
         }
+        public ReportContext()
+        {
+            _appDbContext = new AppDbContext();
+        }
         public async Task Create(ReportDbModel entity)
         {
             if (entity == null)

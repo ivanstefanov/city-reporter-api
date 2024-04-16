@@ -21,6 +21,12 @@ namespace DataAccessLayer.ApiProv
             _userContext = userContext;
             _reportContext = reportContext;
         }
+        public CommentProv()
+        {
+            _context = new CommentContext();
+            _userContext = new UserContext();
+            _reportContext = new ReportContext();
+        }
         public async Task CreateComment(Comment comment)
         {
             if (comment == null)

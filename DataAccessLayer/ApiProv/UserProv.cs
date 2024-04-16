@@ -17,6 +17,10 @@ namespace DataAccessLayer.ApiProv
         {
             _userContext = userContext;
         }
+        public UserProv()
+        {
+            _userContext = new UserContext();
+        }
 
         public async Task CreateUser(User user)
         {

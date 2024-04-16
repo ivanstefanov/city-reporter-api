@@ -12,6 +12,10 @@ namespace DataAccessLayer.DbProv
         {
             _appDbContext = context;
         }
+        public UserContext()
+        {
+            _appDbContext = new AppDbContext();
+        }
 
         public async Task Create(UserDbModel entity)
         {

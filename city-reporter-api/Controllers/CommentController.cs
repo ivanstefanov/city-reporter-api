@@ -1,0 +1,69 @@
+﻿using DataAccessLayer.ApiProv;
+using DataAccessLayer.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+namespace city_reporter_api.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class CommentController : ControllerBase
+    {
+        private readonly UserProv _userProv;
+        private readonly CommentProv _commentProv;
+        public CommentController()
+        {
+            _userProv = new UserProv();
+            _commentProv = new CommentProv();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "User")]
+        public async Task<ActionResult> AddComment(int userId, int reportId, DateTime postedOn, string commentContent)
+        {
+            try
+            {
+                Comment comment = new Comment(0, reportId, userId, postedOn, commentContent);
+
+                await _commentProv.CreateComment(comment);
+
+                User commentUser = await _userProv.ReadUser(userId);
+
+                return Ok(new
+                {
+                    userName = commentUser.Name,
+                    postedOn = comment.PostedOn,
+                    commentContent = commentContent
+                });
+            }
+            catch (NullReferenceException exc)
+            {
+                if (exc.Message == "user is null")
+                {
+                    return BadRequest("user with such an Id doesn't exist.");
+                }
+                else if (exc.Message == "report is null")
+                {
+                    return BadRequest("report with such an Id doesn't exist.");
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (InvalidOperationException exc)
+            {
+                if (exc.Message == "Object already exists")
+                {
+                    return Conflict("comment with such parameters already exists");
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+        }
+
+    }
+}
