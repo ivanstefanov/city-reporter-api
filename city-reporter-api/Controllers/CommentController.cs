@@ -64,6 +64,31 @@ namespace city_reporter_api.Controllers
                 }
             }
         }
+        [HttpGet]
+        [Authorize(Roles = "Guest")]
+        [Route("report/{id}")]
+        public async Task<ActionResult<Comment>> GetComment(int id)
+        {
+            try
+            {
+                Comment returned = await _commentProv.ReadComment(id);
 
+                return Ok(new
+                {
+                    usserId = returned.UserId,
+                    reportId = returned.ReportId,
+                    postedOn = returned.PostedOn,
+                    commentContent = returned.CommentContent
+                });
+            }
+            catch (NullReferenceException exc)
+            {
+                if (exc.Message == "Comment with such a key doesn't exist")
+                {
+                    return NotFound("Comment with such an Id doesn't exist");
+                }
+                return NotFound();
+            }
+        }
     }
 }
